@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import { Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
-import {
-  Program, Provider, web3
-} from '@project-serum/anchor';
+import { Program, Provider, web3 } from '@project-serum/anchor';
 
 import idl from './idl.json';
 import kp from './keypair.json';
@@ -107,7 +105,8 @@ const App = () => {
 
   const sendGif = async() => {
     if (inputValue.length === 0) {
-
+      console.log("No gif link given!");
+      return;
     }
     setInputValue('');
     console.log('Gif link:', inputValue);
@@ -124,8 +123,34 @@ const App = () => {
       console.log("GIF successfully sent to program", inputValue);
 
       await getGifList();
+
     } catch (error) {
       console.log("Error sending GIF:", error);
+    }
+  }
+
+  const deleteGif = async(gifLink, itemAddress) => {
+    if (walletAddress !== itemAddress) {
+      console.log("Not authorized to deete!");
+      return;
+    }
+    console.log('Gif link:', gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.deleteGif(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      });
+      console.log("GIF successfully deleted via program", gifLink);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error deleting GIF:", error);
     }
   }
 
@@ -161,7 +186,16 @@ const App = () => {
           <div className="gif-grid">
             {gifList.map((item, index) => (
               <div className="gif-item" key={index}>
+                {(walletAddress && walletAddress === item.userAddress.toString()) && 
+                  <button className="delete-button" onClick={(event) => {
+                    event.preventDefault();
+                    deleteGif();
+                  }}>
+                    Delete
+                  </button>
+                }
                 <img src={item.gifLink} alt={index} />
+                <p className="addr">{item.userAddress.toString()}</p>
               </div>
             ))}
             </div>
@@ -198,6 +232,7 @@ const App = () => {
       console.log('Fetching GIF list...');
       getGifList();
     }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddress]);
 
   return (
@@ -208,9 +243,9 @@ const App = () => {
           <p className="sub-text">
             Degen meme GIFs ✨ in the metaverse ✨
           </p>
-            {!walletAddress && renderNotConnectedContainer()}
-            {walletAddress && renderConnectedContainer()}
+          {!walletAddress && renderNotConnectedContainer()}
         </div>
+        {walletAddress && renderConnectedContainer()}
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a

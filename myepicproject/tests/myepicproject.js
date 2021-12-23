@@ -36,6 +36,20 @@ const main = async() => {
   console.log('👀 GIF Count', account.totalGifs.toString());
 
   console.log('👀 GIF List', account.gifList);
+
+  // Call delete_gif
+  await program.rpx.deleteGif("https://media.giphy.com/media/5ug19Fv2bd8U9TycSf/giphy.gif", {
+    accounts: {
+      baseAccount: baseAccount.publicKey,
+      user: provider.wallet.publicKey,
+    },
+  });
+
+  account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+  console.log('👀 GIF Count', account.totalGifs.toString());
+
+  console.log('👀 GIF List', account.gifList);
+
 }
 
 const runMain = async() => {

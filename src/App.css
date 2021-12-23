@@ -111,6 +111,12 @@
   object-fit: cover;
 }
 
+.gif-item .addr {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .connected-container input[type='text'] {
   display: inline-block;
   color: white;
