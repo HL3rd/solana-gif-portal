@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
+import trashIcon from './assets/trash-white.svg';
 import './App.css';
 import { Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
@@ -187,11 +188,14 @@ const App = () => {
             {gifList.map((item, index) => (
               <div className="gif-item" key={index}>
                 {(walletAddress && walletAddress === item.userAddress.toString()) && 
-                  <button className="delete-button" onClick={(event) => {
-                    event.preventDefault();
-                    deleteGif();
-                  }}>
-                    Delete
+                  <button
+                    className="delete-button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      deleteGif();
+                    }}
+                  >
+                    <img alt="trash can" className="delete-icon" src={trashIcon} />
                   </button>
                 }
                 <img src={item.gifLink} alt={index} />

@@ -117,6 +117,20 @@
   font-weight: bold;
 }
 
+.gif-item .delete-button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #1a202c;
+  cursor: pointer;
+}
+
+.delete-button .delete-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .connected-container input[type='text'] {
   display: inline-block;
   color: white;
