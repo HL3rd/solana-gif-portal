@@ -43,6 +43,27 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "deleteGif",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "gifLink",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -86,6 +107,6 @@
     }
   ],
   "metadata": {
-    "address": "HkFfzg6Mpq6PwDc9ACwNrsPaA1XRFXcE2yLEoWb4qPDr"
+    "address": "CvSNiPmFm1nyxkF9ayqXDe1hFD2JHjbWcJwodUYNSCJ4"
   }
 }

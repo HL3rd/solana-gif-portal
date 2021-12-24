@@ -131,8 +131,9 @@ const App = () => {
   }
 
   const deleteGif = async(gifLink, itemAddress) => {
+    console.log(`WA::${walletAddress} === IA::${itemAddress}`)
     if (walletAddress !== itemAddress) {
-      console.log("Not authorized to deete!");
+      console.log("Not authorized to delete!");
       return;
     }
     console.log('Gif link:', gifLink);
@@ -192,7 +193,7 @@ const App = () => {
                     className="delete-button"
                     onClick={(event) => {
                       event.preventDefault();
-                      deleteGif();
+                      deleteGif(item.gifLink, item.userAddress.toString());
                     }}
                   >
                     <img alt="trash can" className="delete-icon" src={trashIcon} />
