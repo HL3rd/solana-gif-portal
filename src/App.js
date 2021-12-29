@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import trashIcon from './assets/trash-white.svg';
+import upvoteIcon from './assets/up-arrow-white.svg';
+import downvoteIcon from './assets/down-arrow-white.svg';
 import './App.css';
 import { Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
@@ -167,6 +169,14 @@ const App = () => {
     }
   }
 
+  const upvoteGif = async() => {
+
+  }
+
+  const downvoteGif = async() => {
+
+  }
+
   const renderConnectedContainer = () => {
 
     if (gifList === null) {
@@ -211,7 +221,27 @@ const App = () => {
                   </button>
                 }
                 <img src={item.gifLink} alt={index} />
-                <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
+                <div className="gif-details">
+                  <img
+                    className="arrow upvote-arrow"
+                    alt="upvote"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      upvoteGif();
+                    }}
+                    src={upvoteIcon}
+                  />
+                  <img
+                    className="arrow downvote-arrow"
+                    alt="downvote"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      downvoteGif();
+                    }}
+                    src={downvoteIcon}
+                  />
+                  <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
+                </div>
               </div>
             ))}
             </div>

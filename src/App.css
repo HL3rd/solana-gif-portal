@@ -118,10 +118,28 @@
   object-fit: cover;
 }
 
+.gif-item .gif-details {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.gif-item .arrow {
+  width: auto;
+  height: 25px;
+  border: none;
+  cursor: pointer;
+  padding: 1px 1px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .gif-item .addr {
   color: white;
   font-size: 14px;
   font-weight: bold;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
 .gif-item .delete-button {
