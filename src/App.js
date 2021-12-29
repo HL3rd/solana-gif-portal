@@ -57,8 +57,19 @@ const App = () => {
         const pubKey = response.publicKey.toString();
         console.log('Connected with Public Key:', pubKey);
         setWalletAddress(pubKey);
+    } else {
+      window.open("https://phantom.app/", "_blank");
     }
+  };
 
+  const disconnectWallet = async() => {
+    const { solana } = window;
+
+    if (solana) {
+      await solana.disconnect();
+      console.log('Disconnected wallet:', walletAddress);
+      setWalletAddress(null);
+    }
   };
 
   const renderNotConnectedContainer = () => (
@@ -200,7 +211,7 @@ const App = () => {
                   </button>
                 }
                 <img src={item.gifLink} alt={index} />
-                <p className="addr">{item.userAddress.toString()}</p>
+                <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
               </div>
             ))}
             </div>
@@ -232,6 +243,11 @@ const App = () => {
     }
   }
 
+  const shortenedAddress = (address) => {
+    const lastFour = address.substr(address.length - 4);
+    return address.substring(0,4) + "..." + lastFour;
+  }
+
   useEffect(() => {
     if (walletAddress) {
       console.log('Fetching GIF list...');
@@ -243,7 +259,14 @@ const App = () => {
   return (
     <div className="App">
       <div className="container">
+
         <div className="header-container">
+          {walletAddress && 
+          <button
+            className="cta-button disconnect-wallet-button"
+            onClick={disconnectWallet}>
+              Disconnect: {shortenedAddress(walletAddress)}
+          </button>}
           <p className="header">🖼 Degen Memes Portal</p>
           <p className="sub-text">
             Degen meme GIFs ✨ in the metaverse ✨
@@ -251,6 +274,7 @@ const App = () => {
           {!walletAddress && renderNotConnectedContainer()}
           {walletAddress && renderConnectedContainer()}
         </div>
+        
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
