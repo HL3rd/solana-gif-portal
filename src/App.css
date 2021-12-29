@@ -1,5 +1,5 @@
 .App {
-  height: 100vh;
+  min-height: 100vh;
   background-color: #1a202c;
   overflow: scroll;
   text-align: center;
@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 30px 0 30px;
+  padding: 25px 30px;
 }
 
 .authed-container {
@@ -58,6 +58,15 @@
   animation: gradient-animation 4s ease infinite;
 }
 
+.disconnect-wallet-button {
+  background: -webkit-linear-gradient(left, #35aee2, #60c657);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  margin-left: 70vw;
+}
+
 .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
@@ -69,11 +78,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
   width: 100%;
-  bottom: 0;
-  left: 0;
   padding-bottom: 45px;
+  padding-top: 45px;
 }
 
 .twitter-logo {
@@ -109,6 +116,26 @@
   height: 300px;
   border-radius: 10px;
   object-fit: cover;
+}
+
+.gif-item .addr {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.gif-item .delete-button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #1a202c;
+  cursor: pointer;
+}
+
+.delete-button .delete-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .connected-container input[type='text'] {

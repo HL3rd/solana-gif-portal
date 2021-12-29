@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
+import trashIcon from './assets/trash-white.svg';
 import './App.css';
 import { Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
-import {
-  Program, Provider, web3
-} from '@project-serum/anchor';
+import { Program, Provider, web3 } from '@project-serum/anchor';
 
 import idl from './idl.json';
 import kp from './keypair.json';
@@ -58,8 +57,19 @@ const App = () => {
         const pubKey = response.publicKey.toString();
         console.log('Connected with Public Key:', pubKey);
         setWalletAddress(pubKey);
+    } else {
+      window.open("https://phantom.app/", "_blank");
     }
+  };
 
+  const disconnectWallet = async() => {
+    const { solana } = window;
+
+    if (solana) {
+      await solana.disconnect();
+      console.log('Disconnected wallet:', walletAddress);
+      setWalletAddress(null);
+    }
   };
 
   const renderNotConnectedContainer = () => (
@@ -107,7 +117,8 @@ const App = () => {
 
   const sendGif = async() => {
     if (inputValue.length === 0) {
-
+      console.log("No gif link given!");
+      return;
     }
     setInputValue('');
     console.log('Gif link:', inputValue);
@@ -124,8 +135,35 @@ const App = () => {
       console.log("GIF successfully sent to program", inputValue);
 
       await getGifList();
+
     } catch (error) {
       console.log("Error sending GIF:", error);
+    }
+  }
+
+  const deleteGif = async(gifLink, itemAddress) => {
+    console.log(`WA::${walletAddress} === IA::${itemAddress}`)
+    if (walletAddress !== itemAddress) {
+      console.log("Not authorized to delete!");
+      return;
+    }
+    console.log('Gif link:', gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.deleteGif(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      });
+      console.log("GIF successfully deleted via program", gifLink);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error deleting GIF:", error);
     }
   }
 
@@ -161,7 +199,19 @@ const App = () => {
           <div className="gif-grid">
             {gifList.map((item, index) => (
               <div className="gif-item" key={index}>
+                {(walletAddress && walletAddress === item.userAddress.toString()) && 
+                  <button
+                    className="delete-button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      deleteGif(item.gifLink, item.userAddress.toString());
+                    }}
+                  >
+                    <img alt="trash can" className="delete-icon" src={trashIcon} />
+                  </button>
+                }
                 <img src={item.gifLink} alt={index} />
+                <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
               </div>
             ))}
             </div>
@@ -193,24 +243,38 @@ const App = () => {
     }
   }
 
+  const shortenedAddress = (address) => {
+    const lastFour = address.substr(address.length - 4);
+    return address.substring(0,4) + "..." + lastFour;
+  }
+
   useEffect(() => {
     if (walletAddress) {
       console.log('Fetching GIF list...');
       getGifList();
     }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddress]);
 
   return (
     <div className="App">
       <div className="container">
+
         <div className="header-container">
+          {walletAddress && 
+          <button
+            className="cta-button disconnect-wallet-button"
+            onClick={disconnectWallet}>
+              Disconnect: {shortenedAddress(walletAddress)}
+          </button>}
           <p className="header">🖼 Degen Memes Portal</p>
           <p className="sub-text">
             Degen meme GIFs ✨ in the metaverse ✨
           </p>
-            {!walletAddress && renderNotConnectedContainer()}
-            {walletAddress && renderConnectedContainer()}
+          {!walletAddress && renderNotConnectedContainer()}
+          {walletAddress && renderConnectedContainer()}
         </div>
+        
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
