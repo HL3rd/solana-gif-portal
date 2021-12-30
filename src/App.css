@@ -131,6 +131,8 @@
   padding: 1px 1px;
   display: inline-block;
   vertical-align: middle;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .gif-item .addr {
@@ -139,7 +141,6 @@
   font-weight: bold;
   display: inline-block;
   vertical-align: middle;
-  margin-left: 10px;
 }
 
 .gif-item .delete-button {

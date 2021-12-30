@@ -144,7 +144,7 @@ const App = () => {
   }
 
   const deleteGif = async(gifLink, itemAddress) => {
-    console.log(`WA::${walletAddress} === IA::${itemAddress}`)
+    
     if (walletAddress !== itemAddress) {
       console.log("Not authorized to delete!");
       return;
@@ -169,8 +169,25 @@ const App = () => {
     }
   }
 
-  const upvoteGif = async() => {
+  const upvoteGif = async(gifLink, gifUserAddress) => {
+    
+    console.log('Gif link:', gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
 
+      await program.rpc.upvoteGif(gifLink, gifUserAddress, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+        }
+      });
+      console.log("GIF successfully upvoted via program", gifLink, gifUserAddress);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error upvoting GIF:", error);
+    }
   }
 
   const downvoteGif = async() => {
