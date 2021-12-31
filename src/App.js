@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import trashIcon from './assets/trash-white.svg';
+import upvoteIcon from './assets/up-arrow-white.svg';
+import downvoteIcon from './assets/down-arrow-white.svg';
 import './App.css';
 import { Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
@@ -98,7 +100,7 @@ const App = () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log("ping");
+      
       await program.rpc.startStuffOff({
         accounts: {
           baseAccount: baseAccount.publicKey,
@@ -142,12 +144,12 @@ const App = () => {
   }
 
   const deleteGif = async(gifLink, itemAddress) => {
-    console.log(`WA::${walletAddress} === IA::${itemAddress}`)
+    
     if (walletAddress !== itemAddress) {
       console.log("Not authorized to delete!");
       return;
     }
-    console.log('Gif link:', gifLink);
+    
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -164,6 +166,48 @@ const App = () => {
 
     } catch (error) {
       console.log("Error deleting GIF:", error);
+    }
+  }
+
+  const upvoteGif = async(gifLink, gifUserAddress) => {
+    
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.upvoteGif(gifLink, gifUserAddress, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+        }
+      });
+      console.log("GIF successfully upvoted via program", gifLink, gifUserAddress);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error upvoting GIF:", error);
+    }
+  }
+
+  const downvoteGif = async(votes, gifLink, gifUserAddress) => {
+
+    if (votes <= 0) { return }
+
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.downvoteGif(gifLink, gifUserAddress, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+        }
+      });
+      console.log("GIF successfully downvoted via program", gifLink, gifUserAddress);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error downvoting GIF:", error);
     }
   }
 
@@ -211,7 +255,28 @@ const App = () => {
                   </button>
                 }
                 <img src={item.gifLink} alt={index} />
-                <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
+                <div className="gif-details">
+                  <img
+                    className="arrow upvote-arrow"
+                    alt="upvote"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      upvoteGif(item.gifLink, item.userAddress.toString());
+                    }}
+                    src={upvoteIcon}
+                  />
+                  <p className="detail">{item.votes.toString()}</p>
+                  <img
+                    className="arrow downvote-arrow"
+                    alt="downvote"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      downvoteGif(item.votes, item.gifLink, item.userAddress.toString());
+                    }}
+                    src={downvoteIcon}
+                  />
+                  <p className="detail">{shortenedAddress(item.userAddress.toString())}</p>
+                </div>
               </div>
             ))}
             </div>
