@@ -75,12 +75,16 @@ const App = () => {
   };
 
   const renderNotConnectedContainer = () => (
-    <button
-      className="cta-button connect-wallet-button"
-      onClick={connectWallet}
+    <div>
+      <button
+        className="cta-button connect-wallet-button"
+        onClick={connectWallet}
       >
         Connect to Wallet
       </button>
+      <p className="cta-subtext">(Set network to devnet)</p>
+    </div>
+      
   );
 
   const onInputChange = (event) => {

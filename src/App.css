@@ -52,6 +52,10 @@
   color: white;
 }
 
+.cta-subtext {
+  color: white;
+}
+
 .connect-wallet-button {
   background: -webkit-linear-gradient(left, #60c657, #35aee2);
   background-size: 200% 200%;
