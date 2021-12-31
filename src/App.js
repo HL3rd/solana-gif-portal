@@ -192,7 +192,9 @@ const App = () => {
     }
   }
 
-  const downvoteGif = async(gifLink, gifUserAddress) => {
+  const downvoteGif = async(votes, gifLink, gifUserAddress) => {
+
+    if (votes <= 0) { return }
 
     console.log('Gif link:', gifLink);
     try {
@@ -273,7 +275,7 @@ const App = () => {
                     alt="downvote"
                     onClick={(event) => {
                       event.preventDefault();
-                      downvoteGif(item.gifLink, item.userAddress.toString());
+                      downvoteGif(item.votes, item.gifLink, item.userAddress.toString());
                     }}
                     src={downvoteIcon}
                   />
