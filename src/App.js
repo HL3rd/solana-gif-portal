@@ -192,8 +192,25 @@ const App = () => {
     }
   }
 
-  const downvoteGif = async() => {
+  const downvoteGif = async(gifLink, gifUserAddress) => {
 
+    console.log('Gif link:', gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.downvoteGif(gifLink, gifUserAddress, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+        }
+      });
+      console.log("GIF successfully downvoted via program", gifLink, gifUserAddress);
+
+      await getGifList();
+
+    } catch (error) {
+      console.log("Error downvoting GIF:", error);
+    }
   }
 
   const renderConnectedContainer = () => {
@@ -246,20 +263,21 @@ const App = () => {
                     alt="upvote"
                     onClick={(event) => {
                       event.preventDefault();
-                      upvoteGif();
+                      upvoteGif(item.gifLink, item.userAddress.toString());
                     }}
                     src={upvoteIcon}
                   />
+                  <p className="detail">{item.votes.toString()}</p>
                   <img
                     className="arrow downvote-arrow"
                     alt="downvote"
                     onClick={(event) => {
                       event.preventDefault();
-                      downvoteGif();
+                      downvoteGif(item.gifLink, item.userAddress.toString());
                     }}
                     src={downvoteIcon}
                   />
-                  <p className="addr">{shortenedAddress(item.userAddress.toString())}</p>
+                  <p className="detail">{shortenedAddress(item.userAddress.toString())}</p>
                 </div>
               </div>
             ))}

@@ -84,6 +84,26 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "downvoteGif",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gifLink",
+          "type": "string"
+        },
+        {
+          "name": "gifUserAddress",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [

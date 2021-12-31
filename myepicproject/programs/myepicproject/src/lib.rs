@@ -59,6 +59,25 @@ pub mod myepicproject {
     Ok(())
   }
 
+  pub fn downvote_gif(ctx: Context<DownvoteGif>, gif_link: String, gif_user_address: String) -> ProgramResult {
+    let base_account = &mut ctx.accounts.base_account;
+
+    let sent_gif_link = gif_link.to_string();
+    let sent_user_address = gif_user_address.to_string();
+
+    let gif_list = &mut base_account.gif_list;
+    let item = gif_list
+                .into_iter()
+                .find(|x| (x.user_address.to_string() == sent_user_address && *x.gif_link == sent_gif_link))
+                .unwrap();
+    
+    if item.votes > 0 {
+      item.votes -= 1;
+    }
+
+    Ok(())
+  }
+
 }
 
 #[derive(Accounts)]
@@ -88,6 +107,12 @@ pub struct DeleteGif<'info> {
 
 #[derive(Accounts)]
 pub struct UpvoteGif<'info> {
+  #[account(mut)]
+  pub base_account: Account<'info, BaseAccount>,
+}
+
+#[derive(Accounts)]
+pub struct DownvoteGif<'info> {
   #[account(mut)]
   pub base_account: Account<'info, BaseAccount>,
 }
