@@ -117,8 +117,6 @@ const App = () => {
     }
   }
 
-  // CvSNiPmFm1nyxkF9ayqXDe1hFD2JHjbWcJwodUYNSCJ4
-
   const sendGif = async() => {
     if (inputValue.length === 0) {
       console.log("No gif link given!");
@@ -151,7 +149,7 @@ const App = () => {
       console.log("Not authorized to delete!");
       return;
     }
-    console.log('Gif link:', gifLink);
+    
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -173,7 +171,6 @@ const App = () => {
 
   const upvoteGif = async(gifLink, gifUserAddress) => {
     
-    console.log('Gif link:', gifLink);
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -196,7 +193,6 @@ const App = () => {
 
     if (votes <= 0) { return }
 
-    console.log('Gif link:', gifLink);
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
