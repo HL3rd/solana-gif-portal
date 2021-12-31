@@ -64,6 +64,26 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "upvoteGif",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gifLink",
+          "type": "string"
+        },
+        {
+          "name": "gifUserAddress",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -101,12 +121,16 @@
           {
             "name": "userAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "votes",
+            "type": "u64"
           }
         ]
       }
     }
   ],
   "metadata": {
-    "address": "CvSNiPmFm1nyxkF9ayqXDe1hFD2JHjbWcJwodUYNSCJ4"
+    "address": "HkFfzg6Mpq6PwDc9ACwNrsPaA1XRFXcE2yLEoWb4qPDr"
   }
 }

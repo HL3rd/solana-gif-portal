@@ -38,7 +38,9 @@ const main = async() => {
   console.log('👀 GIF List', account.gifList);
 
   // Call upvote_gif
-  console.log('⬆️ GIF Votes', account.gifList[0].votes.toString());
+  console.log('🗳 GIF Votes', account.gifList[0].votes.toString(), account.gifList[0].gifLink.toString());
+
+  console.log('⬆️ GIF Upvoted', account.gifList[0].gifLink.toString());
 
   await program.rpc.upvoteGif("https://media.giphy.com/media/5ug19Fv2bd8U9TycSf/giphy.gif", provider.wallet.publicKey.toString(), {
     accounts: {
@@ -47,7 +49,7 @@ const main = async() => {
   });
 
   account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-  console.log('⬆️ GIF Votes', account.gifList[0].votes.toString());
+  console.log('🗳 GIF Votes', account.gifList[0].votes.toString(),  account.gifList[0].gifLink.toString());
 
   // Call delete_gif
   await program.rpc.deleteGif("https://media.giphy.com/media/5ug19Fv2bd8U9TycSf/giphy.gif", {

@@ -100,7 +100,7 @@ const App = () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log("ping");
+      
       await program.rpc.startStuffOff({
         accounts: {
           baseAccount: baseAccount.publicKey,
@@ -116,6 +116,8 @@ const App = () => {
       console.log("Error creating BaseAccount account:", error);
     }
   }
+
+  // CvSNiPmFm1nyxkF9ayqXDe1hFD2JHjbWcJwodUYNSCJ4
 
   const sendGif = async() => {
     if (inputValue.length === 0) {
